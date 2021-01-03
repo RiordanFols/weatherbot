@@ -1,5 +1,6 @@
 package ru.chernov.weatherbot;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -14,13 +15,17 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Component
 public class Bot extends TelegramLongPollingBot {
 
-    private final String token;
-    private final String username;
+    private final WeatherReceiver weatherReceiver;
 
-    public Bot(@Value("${telegram.bot.token}") String token,
-               @Value("${telegram.bot.username}") String username) {
-        this.token = token;
-        this.username = username;
+    @Value("${telegram.bot.token}")
+    private String token;
+
+    @Value("${telegram.bot.username}")
+    private String username;
+
+    @Autowired
+    public Bot(WeatherReceiver weatherReceiver) {
+        this.weatherReceiver = weatherReceiver;
     }
 
     @Override
@@ -28,19 +33,27 @@ public class Bot extends TelegramLongPollingBot {
         return token;
     }
 
+    public SendMessage createAnswer(Update update) {
+        Message messageIn = update.getMessage();
+        String textIn = messageIn.getText();
+        String chatId = messageIn.getChatId().toString();
+
+        String textOut = weatherReceiver.executeRequest(textIn);
+
+        SendMessage messageOut = new SendMessage();
+        messageOut.setText(textOut);
+        messageOut.setChatId(chatId);
+
+        return messageOut;
+    }
+
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
-            Message messageIn = update.getMessage();
-            String textIn = messageIn.getText();
-            String chatId = messageIn.getChatId().toString();
-
-            SendMessage messageOut = new SendMessage();
-            messageOut.setText(textIn);
-            messageOut.setChatId(chatId);
+            SendMessage answer = createAnswer(update);
 
             try {
-                execute(messageOut);
+                execute(answer);
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
