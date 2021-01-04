@@ -1,4 +1,4 @@
-package ru.chernov.weatherbot;
+package ru.chernov.weatherbot.bot;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,6 +8,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ru.chernov.weatherbot.weather.WeatherReceiver;
 
 /**
  * @author Pavel Chernov

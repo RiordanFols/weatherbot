@@ -1,4 +1,4 @@
-package ru.chernov.weatherbot;
+package ru.chernov.weatherbot.bot;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
