@@ -35,12 +35,11 @@ public class WeatherReceiver {
 
         try {
             OpenWeatherDto dto = restTemplate.getForObject(url, OpenWeatherDto.class);
-            return weatherManager.getWeather(dto);
+            return weatherManager.generalInfo(dto);
         } catch (HttpClientErrorException.NotFound e) {
             return "City not found";
         } catch (WeatherUnavailableException e) {
             return "Weather service is unavailable";
         }
-
     }
 }
