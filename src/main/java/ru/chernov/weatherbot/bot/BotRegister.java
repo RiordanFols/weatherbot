@@ -1,5 +1,6 @@
 package ru.chernov.weatherbot.bot;
 
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -10,6 +11,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
  * @author Pavel Chernov
  */
 @Component
+@Getter
 public class BotRegister {
 
     private final Bot bot;
@@ -27,9 +29,5 @@ public class BotRegister {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-    }
-
-    public Bot getBot() {
-        return bot;
     }
 }

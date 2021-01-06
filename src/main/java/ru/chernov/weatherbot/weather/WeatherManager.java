@@ -15,12 +15,13 @@ public class WeatherManager {
             throw new WeatherUnavailableException("Can't get weather");
 
         var forecast = new WeatherForecast(dto);
-        return forecast.getCondition() + "  " + forecast.getTemp() + "\n" +
-                "Feels like: " + forecast.getTempFeelsLike() + "\n" +
-                "Pressure: " + forecast.getPressure() + "\n" +
-                "Humidity: " + forecast.getHumidity() + "\n" +
-                "Sunrise: " + forecast.getSunriseTime() + "\n" +
-                "Sunset: " + forecast.getSunsetTime();
+        return forecast.getCondition().getRu() + " " + forecast.getCondition().getEmoji() + "\n" +
+                "Температура: " + forecast.getTemp() + "\n" +
+                "Ощущается как: " + forecast.getTempFeelsLike() + "\n" +
+                "Давление: " + forecast.getPressure() + "\n" +
+                "Влажность: " + forecast.getHumidity() + "\n" +
+                "Рассвет: " + forecast.getSunriseTime() + "\n" +
+                "Закат: " + forecast.getSunsetTime();
     }
 
 

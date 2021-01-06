@@ -3,7 +3,6 @@ package ru.chernov.weatherbot.weather;
 import lombok.Getter;
 import ru.chernov.weatherbot.dto.OpenWeatherDto;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -14,7 +13,7 @@ import java.time.ZonedDateTime;
 @Getter
 public final class WeatherForecast {
 
-    private final String condition;
+    private final WeatherCondition condition;
 
     private final String temp;
     private final String tempFeelsLike;
@@ -26,12 +25,12 @@ public final class WeatherForecast {
     private final String sunsetTime;
 
     public WeatherForecast(OpenWeatherDto dto) {
-        this.condition = dto.getCondition();
-        this.pressure = String.format("%.0f mmHg", dto.getPressure() * 3 / 4.0);
+        this.condition = WeatherCondition.valueOf(dto.getCondition().toUpperCase());
+        this.pressure = String.format("%.0f мм рт.ст.", dto.getPressure() * 3 / 4.0);
         this.humidity = dto.getHumidity() + "%";
 
-        this.temp = String.format("%.0f°C", dto.getTemp() - 273.15);
-        this.tempFeelsLike = String.format("%.0f°C", dto.getTempFeelsLike() - 273.15);
+        this.temp = String.format("%.0f°C", dto.getTemp());
+        this.tempFeelsLike = String.format("%.0f°C", dto.getTempFeelsLike());
 
         this.sunriseTime = getZonedTime(dto.getSunriseTime(), dto.getTimezone());
         this.sunsetTime = getZonedTime(dto.getSunsetTime(), dto.getTimezone());
