@@ -15,7 +15,7 @@ import java.util.Map;
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class OpenWeatherDto {
+public final class WeatherDto {
 
     // weather
     private String condition;
@@ -32,6 +32,9 @@ public final class OpenWeatherDto {
 
     @JsonAlias("cod")
     private int status;
+
+    @JsonProperty("name")
+    private String cityName;
 
     @JsonProperty
     private int timezone;

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import ru.chernov.weatherbot.dto.OpenWeatherDto;
+import ru.chernov.weatherbot.dto.WeatherDto;
 import ru.chernov.weatherbot.exception.WeatherUnavailableException;
 
 /**
@@ -17,8 +17,11 @@ public class WeatherReceiver {
     @Value("${openweather.api.key}")
     private String openweatherApiKey;
 
-    @Value("${openweather.api.uri}")
-    private String openweatherUri;
+    @Value("${openweather.api.weather.uri}")
+    private String weatherUri;
+
+    @Value("${openweather.api.forecast.uri}")
+    private String forecastUri;
 
     private final RestTemplate restTemplate;
     private final WeatherManager weatherManager;
@@ -29,17 +32,35 @@ public class WeatherReceiver {
         this.weatherManager = weatherManager;
     }
 
-    public String executeRequest(String cityName) {
-        String uri = String.format(openweatherUri, cityName, openweatherApiKey);
+    public String getWeather(String cityName) {
+        String uri = String.format(weatherUri, cityName, openweatherApiKey);
         String url = "https://" + uri;
 
         try {
-            OpenWeatherDto dto = restTemplate.getForObject(url, OpenWeatherDto.class);
+            WeatherDto dto = restTemplate.getForObject(url, WeatherDto.class);
             return weatherManager.generalInfo(dto);
         } catch (HttpClientErrorException.NotFound e) {
-            return "City not found";
+            return "Город не найден";
         } catch (WeatherUnavailableException e) {
-            return "Weather service is unavailable";
+            return "К сожалению, сервис погоды недоступен, попробуйте позже";
+        }
+    }
+
+    public String getForecast(String cityName, int days) {
+        String uri = String.format(forecastUri, cityName, days, openweatherApiKey);
+        String url = "https://" + uri;
+
+        if (days < 1 || days > 16) {
+            throw new IllegalArgumentException("Wrong number of days");
+        }
+
+        try {
+            WeatherDto dto = restTemplate.getForObject(url, WeatherDto.class);
+            return weatherManager.generalInfo(dto);
+        } catch (HttpClientErrorException.NotFound e) {
+            return "Город не найден";
+        } catch (WeatherUnavailableException e) {
+            return "К сожалению, сервис погоды недоступен, попробуйте позже";
         }
     }
 }

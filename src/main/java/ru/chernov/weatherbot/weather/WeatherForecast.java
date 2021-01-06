@@ -1,7 +1,7 @@
 package ru.chernov.weatherbot.weather;
 
 import lombok.Getter;
-import ru.chernov.weatherbot.dto.OpenWeatherDto;
+import ru.chernov.weatherbot.dto.WeatherDto;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -13,6 +13,7 @@ import java.time.ZonedDateTime;
 @Getter
 public final class WeatherForecast {
 
+    private final String cityName;
     private final WeatherCondition condition;
 
     private final String temp;
@@ -24,7 +25,8 @@ public final class WeatherForecast {
     private final String sunriseTime;
     private final String sunsetTime;
 
-    public WeatherForecast(OpenWeatherDto dto) {
+    public WeatherForecast(WeatherDto dto) {
+        this.cityName = dto.getCityName();
         this.condition = WeatherCondition.valueOf(dto.getCondition().toUpperCase());
         this.pressure = String.format("%.0f мм рт.ст.", dto.getPressure() * 3 / 4.0);
         this.humidity = dto.getHumidity() + "%";

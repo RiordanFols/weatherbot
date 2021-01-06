@@ -8,15 +8,18 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ru.chernov.weatherbot.bot.commands.CommandHandler;
 import ru.chernov.weatherbot.weather.WeatherReceiver;
 
 /**
  * @author Pavel Chernov
  */
 @Component
-public class Bot extends TelegramLongPollingBot {
+public final class Bot extends TelegramLongPollingBot {
 
     private final WeatherReceiver weatherReceiver;
+    private final CommandHandler commandHandler;
+
 
     @Value("${telegram.bot.token}")
     private String token;
@@ -25,13 +28,9 @@ public class Bot extends TelegramLongPollingBot {
     private String username;
 
     @Autowired
-    public Bot(WeatherReceiver weatherReceiver) {
+    public Bot(WeatherReceiver weatherReceiver, CommandHandler commandHandler) {
         this.weatherReceiver = weatherReceiver;
-    }
-
-    @Override
-    public String getBotToken() {
-        return token;
+        this.commandHandler = commandHandler;
     }
 
     public SendMessage createAnswer(Update update) {
@@ -39,9 +38,15 @@ public class Bot extends TelegramLongPollingBot {
         String textIn = messageIn.getText();
         String chatId = messageIn.getChatId().toString();
 
-        String textOut = weatherReceiver.executeRequest(textIn);
+        String textOut;
+        if (textIn.startsWith("/")) {
+            textOut = commandHandler.handle(textIn);
+        } else {
+            textOut = weatherReceiver.getWeather(textIn);
+        }
 
         SendMessage messageOut = new SendMessage();
+        messageOut.setParseMode("markdown");
         messageOut.setText(textOut);
         messageOut.setChatId(chatId);
 
@@ -59,6 +64,11 @@ public class Bot extends TelegramLongPollingBot {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public String getBotToken() {
+        return token;
     }
 
     @Override

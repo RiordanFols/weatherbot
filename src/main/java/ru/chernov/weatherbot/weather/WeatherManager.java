@@ -1,7 +1,7 @@
 package ru.chernov.weatherbot.weather;
 
 import org.springframework.stereotype.Component;
-import ru.chernov.weatherbot.dto.OpenWeatherDto;
+import ru.chernov.weatherbot.dto.WeatherDto;
 import ru.chernov.weatherbot.exception.WeatherUnavailableException;
 
 /**
@@ -10,12 +10,13 @@ import ru.chernov.weatherbot.exception.WeatherUnavailableException;
 @Component
 public class WeatherManager {
 
-    public String generalInfo(OpenWeatherDto dto) {
+    public String generalInfo(WeatherDto dto) {
         if (dto == null || dto.getStatus() != 200)
             throw new WeatherUnavailableException("Can't get weather");
 
         var forecast = new WeatherForecast(dto);
-        return forecast.getCondition().getRu() + " " + forecast.getCondition().getEmoji() + "\n" +
+        return "*" + forecast.getCityName() + "*" + "\n" +
+                forecast.getCondition().getRu() + " " + forecast.getCondition().getEmoji() + "\n" +
                 "Температура: " + forecast.getTemp() + "\n" +
                 "Ощущается как: " + forecast.getTempFeelsLike() + "\n" +
                 "Давление: " + forecast.getPressure() + "\n" +
@@ -23,6 +24,5 @@ public class WeatherManager {
                 "Рассвет: " + forecast.getSunriseTime() + "\n" +
                 "Закат: " + forecast.getSunsetTime();
     }
-
 
 }
