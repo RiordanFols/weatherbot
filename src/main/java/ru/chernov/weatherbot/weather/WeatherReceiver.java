@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import ru.chernov.weatherbot.dto.ForecastDto;
 import ru.chernov.weatherbot.dto.WeatherDto;
 import ru.chernov.weatherbot.exception.WeatherUnavailableException;
 
@@ -38,7 +39,7 @@ public class WeatherReceiver {
 
         try {
             WeatherDto dto = restTemplate.getForObject(url, WeatherDto.class);
-            return weatherManager.generalInfo(dto);
+            return weatherManager.weatherInfo(dto);
         } catch (HttpClientErrorException.NotFound e) {
             return "Город не найден";
         } catch (WeatherUnavailableException e) {
@@ -55,8 +56,8 @@ public class WeatherReceiver {
         }
 
         try {
-            WeatherDto dto = restTemplate.getForObject(url, WeatherDto.class);
-            return weatherManager.generalInfo(dto);
+            ForecastDto dto = restTemplate.getForObject(url, ForecastDto.class);
+            return weatherManager.forecastInfo(dto);
         } catch (HttpClientErrorException.NotFound e) {
             return "Город не найден";
         } catch (WeatherUnavailableException e) {

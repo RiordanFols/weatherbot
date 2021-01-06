@@ -11,7 +11,7 @@ import java.time.ZonedDateTime;
  * @author Pavel Chernov
  */
 @Getter
-public final class WeatherForecast {
+public final class Weather {
 
     private final String cityName;
     private final WeatherCondition condition;
@@ -25,7 +25,7 @@ public final class WeatherForecast {
     private final String sunriseTime;
     private final String sunsetTime;
 
-    public WeatherForecast(WeatherDto dto) {
+    public Weather(WeatherDto dto) {
         this.cityName = dto.getCityName();
         this.condition = WeatherCondition.valueOf(dto.getCondition().toUpperCase());
         this.pressure = String.format("%.0f мм рт.ст.", dto.getPressure() * 3 / 4.0);

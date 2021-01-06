@@ -15,11 +15,10 @@ import ru.chernov.weatherbot.weather.WeatherReceiver;
  * @author Pavel Chernov
  */
 @Component
-public final class Bot extends TelegramLongPollingBot {
+public class Bot extends TelegramLongPollingBot {
 
     private final WeatherReceiver weatherReceiver;
     private final CommandHandler commandHandler;
-
 
     @Value("${telegram.bot.token}")
     private String token;
@@ -42,7 +41,7 @@ public final class Bot extends TelegramLongPollingBot {
         if (textIn.startsWith("/")) {
             textOut = commandHandler.handle(textIn);
         } else {
-            textOut = weatherReceiver.getWeather(textIn);
+            textOut = weatherReceiver.getForecast(textIn, 16);
         }
 
         SendMessage messageOut = new SendMessage();

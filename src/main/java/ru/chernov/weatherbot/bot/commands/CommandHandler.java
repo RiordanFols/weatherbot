@@ -17,7 +17,7 @@ public class CommandHandler {
         if (textIn.equals("/help") || textIn.equals("/start")) {
             return Command.HelpCommand.helpInfo;
         }
-        for (Command command : commands) {
+        for (var command : commands) {
             if (textIn.toUpperCase().equals("/" + command.toString())) {
                 return command.getAnswer();
             }
