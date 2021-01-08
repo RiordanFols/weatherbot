@@ -1,4 +1,4 @@
-package ru.chernov.weatherbot.bot.commands;
+package ru.chernov.weatherbot.command;
 
 import lombok.Getter;
 import org.springframework.stereotype.Component;
@@ -14,9 +14,6 @@ public class CommandHandler {
     private final Command[] commands = Command.values();
 
     public String handle(String textIn) {
-        if (textIn.equals("/help") || textIn.equals("/start")) {
-            return Command.HelpCommand.helpInfo;
-        }
         for (var command : commands) {
             if (textIn.toUpperCase().equals("/" + command.toString())) {
                 return command.getAnswer();

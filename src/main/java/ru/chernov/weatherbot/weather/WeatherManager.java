@@ -1,9 +1,12 @@
 package ru.chernov.weatherbot.weather;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 import ru.chernov.weatherbot.dto.ForecastDto;
 import ru.chernov.weatherbot.dto.WeatherDto;
-import ru.chernov.weatherbot.exception.WeatherUnavailableException;
 
 /**
  * @author Pavel Chernov
@@ -11,40 +14,55 @@ import ru.chernov.weatherbot.exception.WeatherUnavailableException;
 @Component
 public class WeatherManager {
 
-    public String weatherInfo(WeatherDto dto) {
-        if (dto == null || dto.getStatus() != 200)
-            throw new WeatherUnavailableException("Can't get weather");
+    @Value("${openweather.api.key}")
+    private String openweatherApiKey;
 
-        var weather = new Weather(dto);
-        return "*" + weather.getCityName() + "*" + "\n" +
-                weather.getCondition().getRu() + " " + weather.getCondition().getEmoji() + "\n" +
-                "Температура: " + weather.getTemp() + "\n" +
-                "Ощущается как: " + weather.getTempFeelsLike() + "\n" +
-                "Давление: " + weather.getPressure() + "\n" +
-                "Влажность: " + weather.getHumidity() + "\n" +
-                "Рассвет: " + weather.getSunriseTime() + "\n" +
-                "Закат: " + weather.getSunsetTime();
+    @Value("${openweather.api.weather.uri}")
+    private String weatherUri;
+
+    @Value("${openweather.api.forecast.uri}")
+    private String forecastUri;
+
+    private final RestTemplate restTemplate;
+    private final MessageManager messageManager;
+
+    @Autowired
+    public WeatherManager(RestTemplate restTemplate, MessageManager messageManager) {
+        this.restTemplate = restTemplate;
+        this.messageManager = messageManager;
     }
 
-    public String forecastInfo(ForecastDto dto) {
-        var forecast = new Forecast(dto);
-        StringBuilder answer = new StringBuilder("*" + forecast.getCityName() + "*");
-        for (var dayForecast : forecast.getForecasts()) {
-            String[] months = {"янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"};
-            String day = String.valueOf(dayForecast.getLocalDate().getDayOfMonth());
+    public boolean checkCityExisting(String cityName) {
+        String uri = String.format(weatherUri, cityName, openweatherApiKey);
+        String url = "https://" + uri;
 
-            String month = months[dayForecast.getLocalDate().getMonthValue() - 1];
-
-            answer.append("\n")
-                    .append(day).append(" ")
-                    .append(month).append(": ")
-                    .append(dayForecast.getCondition().getRu())
-                    .append(dayForecast.getCondition().getEmoji())
-                    .append(" ").append(dayForecast.getDayTemp())
-                    .append(" / ").append(dayForecast.getNightTemp());
+        try {
+            return restTemplate.getForObject(url, WeatherDto.class) != null;
+        } catch (HttpClientErrorException.NotFound e) {
+            return false;
         }
-        return answer.toString();
-
     }
 
+    public String getWeather(String cityName) {
+        String uri = String.format(weatherUri, cityName, openweatherApiKey);
+        String url = "https://" + uri;
+
+        WeatherDto dto = restTemplate.getForObject(url, WeatherDto.class);
+        return messageManager.weatherInfo(dto);
+    }
+
+    public String getForecast(String cityName, int days) {
+        if (days == 0)
+            return getWeather(cityName);
+
+        String uri = String.format(forecastUri, cityName, days, openweatherApiKey);
+        String url = "https://" + uri;
+
+        if (days < 1 || days > 16) {
+            throw new IllegalArgumentException("Wrong number of days");
+        }
+
+        ForecastDto dto = restTemplate.getForObject(url, ForecastDto.class);
+        return messageManager.forecastInfo(dto);
+    }
 }
