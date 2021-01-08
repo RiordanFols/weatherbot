@@ -24,8 +24,8 @@ public class KeyboardGenerator {
 
     public InlineKeyboardMarkup getAllOptions(String textIn) {
         var keyboardMarkup = new InlineKeyboardMarkup();  // объект разметки клавиатуры
-        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();  // список рядов кнопок
 
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();  // список рядов кнопок
         for (ForecastButton btn : buttons) {
             List<InlineKeyboardButton> buttonRow = new ArrayList<>();  // ряд кнопок
 

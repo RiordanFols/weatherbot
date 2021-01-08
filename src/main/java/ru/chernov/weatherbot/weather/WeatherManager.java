@@ -52,15 +52,15 @@ public class WeatherManager {
     }
 
     public String getForecast(String cityName, int days) {
+        if (days < 0 || days > 16) {
+            throw new IllegalArgumentException("Wrong number of days");
+        }
+
         if (days == 0)
             return getWeather(cityName);
 
         String uri = String.format(forecastUri, cityName, days, openweatherApiKey);
         String url = "https://" + uri;
-
-        if (days < 1 || days > 16) {
-            throw new IllegalArgumentException("Wrong number of days");
-        }
 
         ForecastDto dto = restTemplate.getForObject(url, ForecastDto.class);
         return messageManager.forecastInfo(dto);

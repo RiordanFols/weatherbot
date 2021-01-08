@@ -24,7 +24,7 @@ public class BotRegister {
 
     public void register(Bot bot) {
         try {
-            TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
+            var telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotsApi.registerBot(bot);
         } catch (TelegramApiException e) {
             e.printStackTrace();
