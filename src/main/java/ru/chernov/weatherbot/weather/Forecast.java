@@ -14,11 +14,14 @@ import java.util.List;
 public class Forecast {
 
     private final String cityName;
+    private final Country country;
     private final int days;
 
     private final List<DayForecast> forecasts = new ArrayList<>();
 
     public Forecast(ForecastDto dto) {
+        this.country = Country.getByName(dto.getCountryName());
+
         this.cityName = dto.getCityName();
         this.days = dto.getDays();
         for (int i = 0; i < days; i++) {

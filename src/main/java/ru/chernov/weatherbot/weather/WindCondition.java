@@ -8,14 +8,14 @@ import lombok.Setter;
  */
 @Getter
 public enum WindCondition {
-    NORTHERN("⬇"),
-    NORTHEASTERN("↙"),
-    EASTERN("⬅"),
-    SOUTHEASTERN("↖"),
-    SOUTHERN("⬆"),
-    SOUTHWESTERN("↗"),
-    WESTERN("➡"),
-    NORTHWESTERN("↘");
+    N("⬇"),
+    NE("↙"),
+    E("⬅"),
+    SE("↖"),
+    S("⬆"),
+    SW("↗"),
+    W("➡"),
+    NW("↘");
 
     @Setter
     private int speed;
@@ -40,21 +40,21 @@ public enum WindCondition {
             throw new IllegalArgumentException();
 
         if (deg <= 22.5)
-            return NORTHERN;
+            return N;
         if (deg <= 67.5)
-            return NORTHEASTERN;
+            return NE;
         if (deg <= 112.5)
-            return EASTERN;
+            return E;
         if (deg <= 157.5)
-            return SOUTHEASTERN;
+            return SE;
         if (deg <= 202.5)
-            return SOUTHERN;
+            return S;
         if (deg <= 247.5)
-            return SOUTHWESTERN;
+            return SW;
         if (deg <= 292.5)
-            return WESTERN;
+            return W;
         if (deg <= 337.5)
-            return NORTHWESTERN;
-        return NORTHERN;
+            return NW;
+        return N;
     }
 }

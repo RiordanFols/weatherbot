@@ -53,7 +53,7 @@ public class Bot extends TelegramLongPollingBot {
                 textOut = commandHandler.handle(textIn);
             } else if (weatherManager.checkCityExisting(textIn)) {
                 var inlineKeyboardMarkup = keyboardGenerator.getAllOptions(textIn);
-                textOut = "Что вас интересует?";
+                textOut = "Что тебя интересует?";
                 messageOut.setReplyMarkup(inlineKeyboardMarkup);
             } else {
                 textOut = "Город не найден";

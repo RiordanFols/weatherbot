@@ -39,6 +39,7 @@ public final class WeatherDto {
 
     @JsonProperty("name")
     private String cityName;
+    private String countryName;
 
     @JsonProperty
     private int timezone;
@@ -60,6 +61,7 @@ public final class WeatherDto {
     private void unpackSys(Map<String, Object> sys) {
         this.sunriseTime = (Integer) sys.get("sunrise");
         this.sunsetTime = (Integer) sys.get("sunset");
+        this.countryName = sys.get("country").toString();
     }
 
     @JsonProperty("wind")

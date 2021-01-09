@@ -13,12 +13,11 @@ import ru.chernov.weatherbot.weather.Weather;
 public class MessageManager {
 
     public String weatherInfo(WeatherDto dto) {
-
         var weather = new Weather(dto);
         var weatherCondition = weather.getWeatherCondition();
         var windCondition = weather.getWindCondition();
 
-        return "*" + weather.getCityName() + "*" + "\n" +
+        return "*" + weather.getCityName() + "* " + weather.getCountry().getEmoji() + "\n" +
                 weatherCondition.getRu() + " " + weatherCondition.getEmoji() + "\n" +
                 "Температура: " + weather.getTemp() + "\n" +
                 "Ощущается как: " + weather.getTempFeelsLike() + "\n" +
@@ -31,7 +30,9 @@ public class MessageManager {
 
     public String forecastInfo(ForecastDto dto) {
         var forecast = new Forecast(dto);
-        StringBuilder answer = new StringBuilder("*" + forecast.getCityName() + "*");
+        var emoji = forecast.getCountry().getEmoji();
+        StringBuilder answer = new StringBuilder("*" + forecast.getCityName() + "* " + emoji);
+
         for (var dayForecast : forecast.getForecasts()) {
             String[] months = {"янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"};
             String day = String.valueOf(dayForecast.getLocalDate().getDayOfMonth());

@@ -26,13 +26,15 @@ public class ForecastDto {
 
     // city
     private String cityName;
+    private String countryName;
 
     @JsonProperty("cnt")
     private int days;
 
     @JsonProperty("city")
     private void unpackCity(Map<String, Object> map) {
-        this.cityName = (String) map.get("name");
+        this.cityName = map.get("name").toString();
+        this.countryName = map.get("country").toString();
     }
 
     @JsonProperty("list")
