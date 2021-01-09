@@ -1,8 +1,10 @@
-package ru.chernov.weatherbot.weather;
+package ru.chernov.weatherbot.bot;
 
 import org.springframework.stereotype.Component;
 import ru.chernov.weatherbot.dto.ForecastDto;
 import ru.chernov.weatherbot.dto.WeatherDto;
+import ru.chernov.weatherbot.weather.Forecast;
+import ru.chernov.weatherbot.weather.Weather;
 
 /**
  * @author Pavel Chernov
@@ -13,10 +15,14 @@ public class MessageManager {
     public String weatherInfo(WeatherDto dto) {
 
         var weather = new Weather(dto);
+        var weatherCondition = weather.getWeatherCondition();
+        var windCondition = weather.getWindCondition();
+
         return "*" + weather.getCityName() + "*" + "\n" +
-                weather.getCondition().getRu() + " " + weather.getCondition().getEmoji() + "\n" +
+                weatherCondition.getRu() + " " + weatherCondition.getEmoji() + "\n" +
                 "Температура: " + weather.getTemp() + "\n" +
                 "Ощущается как: " + weather.getTempFeelsLike() + "\n" +
+                "Ветер: " + windCondition.getEmoji() + " " + windCondition.getSpeed() + " м/c" + "\n" +
                 "Давление: " + weather.getPressure() + "\n" +
                 "Влажность: " + weather.getHumidity() + "\n" +
                 "Рассвет: " + weather.getSunriseTime() + "\n" +

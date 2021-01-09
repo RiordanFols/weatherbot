@@ -14,10 +14,12 @@ import java.time.ZonedDateTime;
 public final class Weather {
 
     private final String cityName;
-    private final WeatherCondition condition;
+    private final WeatherCondition weatherCondition;
 
     private final String temp;
     private final String tempFeelsLike;
+
+    private final WindCondition windCondition;
 
     private final String pressure;
     private final String humidity;
@@ -25,14 +27,17 @@ public final class Weather {
     private final String sunriseTime;
     private final String sunsetTime;
 
+
     public Weather(WeatherDto dto) {
         this.cityName = dto.getCityName();
-        this.condition = WeatherCondition.valueOf(dto.getCondition().toUpperCase());
+        this.weatherCondition = WeatherCondition.valueOf(dto.getCondition().toUpperCase());
         this.pressure = String.format("%.0f мм рт.ст.", dto.getPressure() * 3 / 4.0);
         this.humidity = dto.getHumidity() + "%";
 
         this.temp = String.format("%.0f°C", dto.getTemp());
         this.tempFeelsLike = String.format("%.0f°C", dto.getTempFeelsLike());
+
+        this.windCondition = WindCondition.getWind(dto.getWindDeg(), dto.getWindSpeed());
 
         this.sunriseTime = getZonedTime(dto.getSunriseTime(), dto.getTimezone());
         this.sunsetTime = getZonedTime(dto.getSunsetTime(), dto.getTimezone());

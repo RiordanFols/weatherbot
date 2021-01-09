@@ -30,6 +30,10 @@ public final class WeatherDto {
     private int sunriseTime;
     private int sunsetTime;
 
+    // wind
+    private int windSpeed;
+    private double windDeg;
+
     @JsonAlias("cod")
     private int status;
 
@@ -58,5 +62,9 @@ public final class WeatherDto {
         this.sunsetTime = (Integer) sys.get("sunset");
     }
 
-
+    @JsonProperty("wind")
+    private void unpackWind(Map<String, Object> wind) {
+        this.windSpeed = (int) Double.parseDouble(wind.get("speed").toString());
+        this.windDeg = Double.parseDouble(wind.get("deg").toString());
+    }
 }
