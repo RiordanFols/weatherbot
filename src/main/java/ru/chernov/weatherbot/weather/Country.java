@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
  */
 public enum Country {
     DEFAULT(""),
+    // ISO2 коды стран и их флаги в виде эмодзи
     AF("\uD83C\uDDE6\uD83C\uDDEB"),
     AD("\uD83C\uDDE6\uD83C\uDDE9"),
     AE("\uD83C\uDDE6\uD83C\uDDEA"),
@@ -224,6 +225,7 @@ public enum Country {
         if (countries.contains(name)) {
             return Country.valueOf(name.toUpperCase());
         } else {
+            // выдача дефолтной страны без флага
             return Country.DEFAULT;
         }
     }
