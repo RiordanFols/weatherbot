@@ -16,6 +16,7 @@
 
     <properties>
         <java.version>15</java.version>
+        <telegrambots.version>5.0.1</telegrambots.version>
     </properties>
 
     <dependencies>
@@ -36,11 +37,18 @@
             <optional>true</optional>
         </dependency>
 
+        <!--for StringUtils-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.11</version>
+        </dependency>
+
         <!--telegram-->
         <dependency>
             <groupId>org.telegram</groupId>
             <artifactId>telegrambots</artifactId>
-            <version>5.0.1</version>
+            <version>${telegrambots.version}</version>
         </dependency>
     </dependencies>
 

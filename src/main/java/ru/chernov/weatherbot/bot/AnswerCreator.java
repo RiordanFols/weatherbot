@@ -1,5 +1,6 @@
 package ru.chernov.weatherbot.bot;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -17,8 +18,9 @@ import ru.chernov.weatherbot.weather.WeatherManager;
 public class AnswerCreator {
 
     private static final String CITY_NOT_FOUND = "Город не найден";
-    public static final String BUTTONS_HEADER = "Что тебя интересует?";
-    public static final String UNKNOWN_REQUEST = "Неизвестный запрос";
+    private static final String BUTTONS_HEADER = "Что тебя интересует?";
+    private static final String UNKNOWN_REQUEST = "Неизвестный запрос";
+    private static final String UNACCEPTABLE_SYMBOLS = "Допустимы только латиница/кириллица, дефисы и пробелы";
 
     private final WeatherManager weatherManager;
     private final KeyboardGenerator keyboardGenerator;
@@ -62,10 +64,18 @@ public class AnswerCreator {
 
         messageOut.setChatId(message.getChatId().toString());
 
-        if (text.length() > 30) {
+        if (!StringUtils.containsOnly(text, " -" +
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+                "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ")) {
+            messageOut.setText(UNACCEPTABLE_SYMBOLS);
+            return messageOut;
+        }
+
+        if (text.length() < 2 || text.length() > 30) {
             messageOut.setText(CITY_NOT_FOUND);
             return messageOut;
         }
+
         // проверка на существование города
         if (weatherManager.checkCityExisting(text)) {
             // создание кнопок

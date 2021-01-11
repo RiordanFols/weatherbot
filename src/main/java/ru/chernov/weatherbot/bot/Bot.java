@@ -1,5 +1,6 @@
 package ru.chernov.weatherbot.bot;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  * @author Pavel Chernov
  */
 @Component
+@Log4j2
 public class Bot extends TelegramLongPollingBot {
 
     private final AnswerCreator answerCreator;
@@ -30,8 +32,8 @@ public class Bot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         try {
             execute(answerCreator.createAnswer(update));
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
+        } catch (RuntimeException | TelegramApiException e) {
+            log.error(e.getClass() + "\nText: " + update.getMessage().getText() + "\nMessage: " + e.getMessage());
         }
     }
 
