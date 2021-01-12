@@ -1,6 +1,5 @@
 package ru.chernov.weatherbot.dto;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -27,6 +26,7 @@ public final class WeatherDto {
     private int humidity;
 
     // sys
+    private String countryName;
     private int sunriseTime;
     private int sunsetTime;
 
@@ -34,12 +34,11 @@ public final class WeatherDto {
     private int windSpeed;
     private double windDeg;
 
-    @JsonAlias("cod")
+    @JsonProperty("cod")
     private int status;
 
     @JsonProperty("name")
     private String cityName;
-    private String countryName;
 
     @JsonProperty
     private int timezone;

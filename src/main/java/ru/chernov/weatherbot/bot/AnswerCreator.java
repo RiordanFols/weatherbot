@@ -7,7 +7,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import ru.chernov.weatherbot.command.CommandHandler;
+import ru.chernov.weatherbot.command.Command;
 import ru.chernov.weatherbot.keyboard.KeyboardGenerator;
 import ru.chernov.weatherbot.weather.WeatherManager;
 
@@ -24,17 +24,14 @@ public class AnswerCreator {
 
     private final WeatherManager weatherManager;
     private final KeyboardGenerator keyboardGenerator;
-    private final CommandHandler commandHandler;
 
     private SendMessage messageOut;
 
     @Autowired
     public AnswerCreator(WeatherManager weatherManager,
-                         KeyboardGenerator keyboardGenerator,
-                         CommandHandler commandHandler) {
+                         KeyboardGenerator keyboardGenerator) {
         this.weatherManager = weatherManager;
         this.keyboardGenerator = keyboardGenerator;
-        this.commandHandler = commandHandler;
     }
 
     public SendMessage createAnswer(Update update) {
@@ -102,7 +99,7 @@ public class AnswerCreator {
 
     private SendMessage answerForCommand(Message message) {
         // выдача информации по команде
-        messageOut.setText(commandHandler.handle(message.getText()));
+        messageOut.setText(Command.handleCommand(message.getText()));
         messageOut.setChatId(message.getChatId().toString());
 
         return messageOut;

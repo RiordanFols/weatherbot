@@ -37,7 +37,7 @@ public enum WindCondition {
 
     private static WindCondition getWindDirection(double deg) {
         if (deg < 0 || deg > 360)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("The angle can be from 0 to 360 degrees");
 
         if (deg <= 22.5)
             return N;
