@@ -3,6 +3,8 @@ package ru.chernov.weatherbot.weather;
 import lombok.Getter;
 
 /**
+ * Возможные состояния погоды по api.openweather и эмодзи к ним
+ *
  * @author Pavel Chernov
  */
 @Getter

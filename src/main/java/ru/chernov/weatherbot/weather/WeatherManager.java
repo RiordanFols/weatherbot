@@ -11,6 +11,8 @@ import ru.chernov.weatherbot.dto.ForecastDto;
 import ru.chernov.weatherbot.dto.WeatherDto;
 
 /**
+ * Менеджер по работе с данными погоды
+ *
  * @author Pavel Chernov
  */
 @Component
@@ -34,6 +36,12 @@ public class WeatherManager {
         this.messageFormatter = messageFormatter;
     }
 
+    /**
+     * Проверка существования города в api.openweather
+     *
+     * @param cityName название города
+     * @return boolean: наличие города
+     */
     public boolean checkCityExisting(String cityName) {
         if (StringUtils.isEmpty(cityName))
             throw new IllegalArgumentException("Empty city name");
@@ -48,7 +56,13 @@ public class WeatherManager {
         }
     }
 
-    private String getWeather(String cityName) {
+    /**
+     * Получение информации о погоде в dto и последущее преобразование в строку
+     *
+     * @param cityName название города
+     * @return сообщение о погоде, сформированное messageManager
+     */
+    public String getWeather(String cityName) {
         String uri = String.format(weatherUri, cityName, openweatherApiKey);
         String url = "https://" + uri;
 
@@ -57,6 +71,14 @@ public class WeatherManager {
         return messageFormatter.weatherInfo(dto);
     }
 
+    /**
+     * Получение информации о прогнозе погоды в dto и последущее преобразование в строку
+     * При days = 0 возвращает погоду на данный момент
+     *
+     * @param cityName название города
+     * @param days     кол-во дней для прогноза [1-17]
+     * @return сообщение о погоде, сформированное messageManager
+     */
     public String getForecast(String cityName, int days) {
         if (StringUtils.isEmpty(cityName))
             throw new IllegalArgumentException("Empty city name");

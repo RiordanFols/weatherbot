@@ -8,6 +8,8 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 /**
+ * Класс погоды, трансформируемый из WeatherDto
+ *
  * @author Pavel Chernov
  */
 @Getter
@@ -49,10 +51,17 @@ public final class Weather {
         this.sunsetTime = getZonedTime(dto.getSunsetTime(), dto.getTimezone());
     }
 
+    /**
+     * Получение зонового времени
+     *
+     * @param secs     секунды с начала эры
+     * @param zoneSecs зоновое время в секундах по UTC
+     * @return время в формате HH:mm:SS
+     */
     private String getZonedTime(long secs, int zoneSecs) {
         var instant = Instant.ofEpochSecond(secs);
         var zoneOffset = ZoneOffset.ofTotalSeconds(zoneSecs);
         var zonedDateTime = ZonedDateTime.ofInstant(instant, zoneOffset);
-        return zonedDateTime.toLocalTime().toString().split("\\.")[0];
+        return zonedDateTime.toLocalTime().toString();
     }
 }

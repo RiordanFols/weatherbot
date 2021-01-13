@@ -6,6 +6,9 @@ import org.springframework.web.client.RestTemplate;
 
 
 /**
+ * Конфиг необходим для создания RestTemplate
+ * С помощью RestTemplate осуществляются все Rest запросы в приложении
+ *
  * @author Pavel Chernov
  */
 @Configuration

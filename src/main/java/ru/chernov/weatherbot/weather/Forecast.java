@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Класс прогноза погоды, трансформируемый из ForecastDto
+ *
  * @author Pavel Chernov
  */
 @Getter
@@ -38,6 +40,11 @@ public class Forecast {
         }
     }
 
+    /**
+     * Прогноз на 1 день
+     *
+     * @author Pavel Chernov
+     */
     @Getter
     @EqualsAndHashCode
     public static class DayForecast {

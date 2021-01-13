@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Генерирует клавиатуру к ответу пользователю
+ *
  * @author Pavel Chernov
  */
 @Getter
@@ -23,6 +25,12 @@ public class KeyboardGenerator {
         buttons.add(new ForecastButton("Прогноз на 2 недели", 14));
     }
 
+    /**
+     * Формирует клавиатуру из всех доступных кнопок по одной в ряду
+     *
+     * @param cityName название города
+     * @return сформированная клавиатура
+     */
     public InlineKeyboardMarkup getAllOptions(String cityName) {
         var keyboardMarkup = new InlineKeyboardMarkup();  // объект разметки клавиатуры
 

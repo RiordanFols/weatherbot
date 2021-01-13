@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Dto, содержащий информацию о прогнозе погоды
+ *
  * @author Pavel Chernov
  */
 @Getter
@@ -18,21 +20,21 @@ import java.util.Map;
 public class ForecastDto {
 
     // list -> weather
-    private List<String> condition = new ArrayList<>();
+    private List<String> condition = new ArrayList<>(); // "Rain", "Snow", "Clear", etc
 
     // list -> temp
-    private List<Double> dayTemp = new ArrayList<>();
-    private List<Double> nightTemp = new ArrayList<>();
+    private List<Double> dayTemp = new ArrayList<>(); // °C
+    private List<Double> nightTemp = new ArrayList<>(); // °C
 
     // city
     private String cityName;
-    private String countryName;
+    private String countryName; // Iso2
 
     @JsonProperty("cnt")
-    private int days;
+    private int days; // 1 - 17
 
     @JsonProperty("cod")
-    private int status;
+    private int status; // HTTP status code
 
     @JsonProperty("city")
     private void unpackCity(Map<String, Object> map) {

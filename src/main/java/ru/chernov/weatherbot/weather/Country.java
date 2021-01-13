@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * Страна и ее флаг-эмодзи
+ *
  * @author Pavel Chernov
  */
 public enum Country {
@@ -216,6 +218,12 @@ public enum Country {
         this.emoji = emoji;
     }
 
+    /**
+     * Возвращает enum по Iso2 коду страны
+     *
+     * @param name имя страны в Iso2 коде
+     * @return готовый enum
+     */
     public static Country getByName(String name) {
         // получение списка имен всех стран
         List<String> countries = Arrays.stream(Country.values())

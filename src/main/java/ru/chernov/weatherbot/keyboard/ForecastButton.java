@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 /**
+ * Кнопка InlineKeyboardButton с добавленией кол-ва дней длительности прогноза
  * @author Pavel Chernov
  */
 @Getter

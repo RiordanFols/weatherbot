@@ -8,6 +8,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 /**
+ * Регистрирует бота в TelegramBotsApi
+ *
  * @author Pavel Chernov
  */
 @Component

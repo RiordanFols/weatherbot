@@ -12,6 +12,9 @@ import ru.chernov.weatherbot.keyboard.KeyboardGenerator;
 import ru.chernov.weatherbot.weather.WeatherManager;
 
 /**
+ * Создает ответ на update пользователя
+ * Обрабатывает текст, текстовую команду или нажатие на кнопку
+ *
  * @author Pavel Chernov
  */
 @Component
@@ -34,6 +37,13 @@ public class AnswerCreator {
         this.keyboardGenerator = keyboardGenerator;
     }
 
+    /**
+     * Возвращает готовый ответ на update пользователя
+     * Основной метод класса
+     *
+     * @param update пришедший от пользователя update
+     * @return готовое ответное сообщение
+     */
     public SendMessage createAnswer(Update update) {
         messageOut = new SendMessage();
         messageOut.setParseMode("markdown");
@@ -41,7 +51,7 @@ public class AnswerCreator {
         if (update.hasMessage()) {  // если пришло сообщение
             Message messageIn = update.getMessage();
 
-            if (messageIn.getText().startsWith("/")) {  // если команда
+            if (messageIn.getText().startsWith("/")) {  // если пришла команда
                 return answerForCommand(messageIn);
             } else {
                 return answerForText(messageIn);
@@ -55,6 +65,13 @@ public class AnswerCreator {
         }
     }
 
+    /**
+     * Обрабатывает пришедшее сообщение и выдает ответ
+     * Ожидает название города в тексте сообщения
+     *
+     * @param message сообщение, взятое из update пользователя
+     * @return ответное сообщение с текстом и несколькими кнопками
+     */
     private SendMessage answerForText(Message message) {
         String text = message.getText();
 
@@ -84,6 +101,12 @@ public class AnswerCreator {
         return messageOut;
     }
 
+    /**
+     * Обрабатывает пришедшее сообщение и выдает ответ
+     *
+     * @param callbackQuery нажатие на кнопку, взятое из update
+     * @return ответное сообщение с прогнозом погоды
+     */
     private SendMessage answerForCallback(CallbackQuery callbackQuery) {
         // парсинг города и кол-ва дней из данных кнопки
         String cityName = callbackQuery.getData().split("/")[0];
@@ -96,6 +119,12 @@ public class AnswerCreator {
         return messageOut;
     }
 
+    /**
+     * Обрабатывает пришедшую команду и выдает ответ
+     *
+     * @param message сообщение, содержащее в тексте команду
+     * @return ответное сообщение с ответом на команду
+     */
     private SendMessage answerForCommand(Message message) {
         // выдача информации по команде
         messageOut.setText(Command.handleCommand(message.getText()));

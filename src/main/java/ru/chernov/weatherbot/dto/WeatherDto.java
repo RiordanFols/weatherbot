@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Dto, содержащий информацию о текущей погоде
+ *
  * @author Pavel Chernov
  */
 @Getter
@@ -17,31 +19,31 @@ import java.util.Map;
 public final class WeatherDto {
 
     // weather
-    private String condition;
+    private String condition; // "Rain", "Snow", "Clear", etc
 
     // main
-    private double temp;
-    private double tempFeelsLike;
-    private long pressure;
-    private int humidity;
+    private double temp; // °C
+    private double tempFeelsLike; // °C
+    private long pressure; // гПа
+    private int humidity; // 0-100
 
     // sys
-    private String countryName;
-    private int sunriseTime;
-    private int sunsetTime;
+    private String countryName; // Iso2
+    private int sunriseTime; // e.g. 08:12:20
+    private int sunsetTime; // same
 
     // wind
-    private int windSpeed;
-    private double windDeg;
+    private int windSpeed; // m/s
+    private double windDeg; // 0-360
 
     @JsonProperty("cod")
-    private int status;
+    private int status; // HTTP status code
 
     @JsonProperty("name")
     private String cityName;
 
     @JsonProperty
-    private int timezone;
+    private int timezone; // in seconds
 
     @JsonProperty("weather")
     private void unpackWeather(List<Map<String, Object>> weather) {

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * Хранит все команды и занимается их обработкой
+ *
  * @author Pavel Chernov
  */
 @Getter
@@ -24,6 +26,13 @@ public enum Command {
         this.answer = answer;
     }
 
+    /**
+     * Обрабатывает команду и выдает ответ
+     * Если команды не существует, выдает информацию об этом
+     *
+     * @param command команда в формате "/command"
+     * @return ответ на команду
+     */
     public static String handleCommand(String command) {
         // /help -> HELP
         command = command.substring(1).toUpperCase();
@@ -33,9 +42,12 @@ public enum Command {
                 .map(Enum::name)
                 .collect(Collectors.toList());
 
+        // если команда существует
         if (commands.contains(command)) {
+            // выдаем ответ на команду
             return Command.valueOf(command).getAnswer();
         } else {
+            // возвращаем ответ об отсутствии команды
             return DEFAULT.getAnswer();
         }
     }

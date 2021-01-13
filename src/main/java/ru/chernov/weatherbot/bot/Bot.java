@@ -9,6 +9,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /**
+ * Основной класс
+ * Обрабатывает пришедший update и отсылает ответ пользователю
+ *
  * @author Pavel Chernov
  */
 @Component
@@ -28,6 +31,11 @@ public class Bot extends TelegramLongPollingBot {
         this.answerCreator = answerCreator;
     }
 
+    /**
+     * Отсылает пользователю результат работы answerCreator
+     *
+     * @param update update от пользователя
+     */
     @Override
     public void onUpdateReceived(Update update) {
         try {
