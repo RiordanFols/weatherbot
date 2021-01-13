@@ -1,11 +1,12 @@
 package ru.chernov.weatherbot.weather;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import ru.chernov.weatherbot.bot.MessageManager;
+import ru.chernov.weatherbot.bot.MessageFormatter;
 import ru.chernov.weatherbot.dto.ForecastDto;
 import ru.chernov.weatherbot.dto.WeatherDto;
 
@@ -25,15 +26,18 @@ public class WeatherManager {
     private String forecastUri;
 
     private final RestTemplate restTemplate;
-    private final MessageManager messageManager;
+    private final MessageFormatter messageFormatter;
 
     @Autowired
-    public WeatherManager(RestTemplate restTemplate, MessageManager messageManager) {
+    public WeatherManager(RestTemplate restTemplate, MessageFormatter messageFormatter) {
         this.restTemplate = restTemplate;
-        this.messageManager = messageManager;
+        this.messageFormatter = messageFormatter;
     }
 
     public boolean checkCityExisting(String cityName) {
+        if (StringUtils.isEmpty(cityName))
+            throw new IllegalArgumentException("Empty city name");
+
         String uri = String.format(weatherUri, cityName, openweatherApiKey);
         String url = "https://" + uri;
 
@@ -44,15 +48,19 @@ public class WeatherManager {
         }
     }
 
-    public String getWeather(String cityName) {
+    private String getWeather(String cityName) {
         String uri = String.format(weatherUri, cityName, openweatherApiKey);
         String url = "https://" + uri;
 
         WeatherDto dto = restTemplate.getForObject(url, WeatherDto.class);
-        return messageManager.weatherInfo(dto);
+
+        return messageFormatter.weatherInfo(dto);
     }
 
     public String getForecast(String cityName, int days) {
+        if (StringUtils.isEmpty(cityName))
+            throw new IllegalArgumentException("Empty city name");
+
         if (days < 0 || days > 16) {
             throw new IllegalArgumentException("Wrong number of days");
         }
@@ -64,6 +72,7 @@ public class WeatherManager {
         String url = "https://" + uri;
 
         ForecastDto dto = restTemplate.getForObject(url, ForecastDto.class);
-        return messageManager.forecastInfo(dto);
+
+        return messageFormatter.forecastInfo(dto);
     }
 }

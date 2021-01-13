@@ -1,4 +1,4 @@
-package ru.chernov.weatherbot;
+package ru.chernov.weatherbot.enums;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,10 +14,16 @@ import ru.chernov.weatherbot.weather.Country;
 public class CountryTest {
 
     @Test
-    void shouldGetCountryFromIso2() {
+    void shouldGetAllCountriesFromIso2() {
         Country[] countries = Country.values();
         for (var country : countries) {
-            Assertions.assertEquals(Country.getByName(country.name()), country);
+            Assertions.assertEquals(country, Country.getByName(country.name()));
         }
+    }
+
+    @Test
+    void shouldGetDefaultFromWrongIso2() {
+        String countryName = "ZZZ";
+        Assertions.assertEquals(Country.DEFAULT, Country.getByName(countryName));
     }
 }

@@ -17,10 +17,10 @@ import ru.chernov.weatherbot.weather.WeatherManager;
 @Component
 public class AnswerCreator {
 
-    private static final String CITY_NOT_FOUND = "Город не найден";
-    private static final String BUTTONS_HEADER = "Что тебя интересует?";
-    private static final String UNKNOWN_REQUEST = "Неизвестный запрос";
-    private static final String UNACCEPTABLE_SYMBOLS = "Допустимы только латиница/кириллица, дефисы и пробелы";
+    public static final String CITY_NOT_FOUND = "Город не найден";
+    public static final String BUTTONS_HEADER = "Что тебя интересует?";
+    public static final String UNKNOWN_REQUEST = "Неизвестный запрос";
+    public static final String UNACCEPTABLE_SYMBOLS = "Допустимы только латиница/кириллица, дефисы и пробелы";
 
     private final WeatherManager weatherManager;
     private final KeyboardGenerator keyboardGenerator;
@@ -35,7 +35,6 @@ public class AnswerCreator {
     }
 
     public SendMessage createAnswer(Update update) {
-
         messageOut = new SendMessage();
         messageOut.setParseMode("markdown");
 

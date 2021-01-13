@@ -1,4 +1,4 @@
-package ru.chernov.weatherbot;
+package ru.chernov.weatherbot.enums;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,11 +14,16 @@ import ru.chernov.weatherbot.command.Command;
 public class CommandTest {
 
     @Test
-    void shouldAnswerToCommands() {
+    void shouldAnswerToAllCommands() {
         Command[] commands = Command.values();
         for (var command : commands) {
             String commandIn = "/" + command.name().toLowerCase();
             Assertions.assertEquals(command.getAnswer(), Command.handleCommand(commandIn));
         }
+    }
+
+    @Test
+    void shouldAnswerToWrongCommand() {
+        Assertions.assertEquals(Command.DEFAULT.getAnswer(), Command.handleCommand("/tra123ta123"));
     }
 }

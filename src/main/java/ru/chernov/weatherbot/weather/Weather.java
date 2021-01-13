@@ -30,6 +30,9 @@ public final class Weather {
     private final String sunsetTime;
 
     public Weather(WeatherDto dto) {
+        if (dto == null || dto.getStatus() != 200)
+            throw new IllegalArgumentException("Bad dto");
+
         this.country = Country.getByName(dto.getCountryName());
         this.cityName = dto.getCityName();
 

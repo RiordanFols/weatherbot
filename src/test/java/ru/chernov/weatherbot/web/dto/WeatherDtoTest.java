@@ -1,4 +1,4 @@
-package ru.chernov.weatherbot.dto;
+package ru.chernov.weatherbot.web.dto;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import ru.chernov.weatherbot.dto.WeatherDto;
 
 /**
  * @author Pavel Chernov
