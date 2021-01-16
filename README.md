@@ -6,6 +6,9 @@
 
 Использует Telegram Bot Api и openweather.api
 
+##### Пример работы:
+![Пример работы](pics/Weatherbot.png)
+
 ##### Для запуска:
 1) Зарегистрировать бота с помощью BotFather: https://core.telegram.org/bots
 
