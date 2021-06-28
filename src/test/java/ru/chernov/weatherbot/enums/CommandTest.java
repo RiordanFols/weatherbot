@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-import ru.chernov.weatherbot.command.Command;
+import ru.chernov.weatherbot.answer.Command;
 
 /**
  * @author Pavel Chernov

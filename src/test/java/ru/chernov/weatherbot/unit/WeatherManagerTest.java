@@ -8,7 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
-import ru.chernov.weatherbot.bot.MessageFormatter;
+import ru.chernov.weatherbot.answer.MessageFormatter;
 import ru.chernov.weatherbot.dto.ForecastDto;
 import ru.chernov.weatherbot.dto.WeatherDto;
 import ru.chernov.weatherbot.weather.WeatherManager;

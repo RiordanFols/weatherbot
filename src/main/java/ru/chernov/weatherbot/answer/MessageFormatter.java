@@ -1,4 +1,4 @@
-package ru.chernov.weatherbot.bot;
+package ru.chernov.weatherbot.answer;
 
 import org.springframework.stereotype.Component;
 import ru.chernov.weatherbot.dto.ForecastDto;

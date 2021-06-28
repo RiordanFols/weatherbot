@@ -1,4 +1,4 @@
-package ru.chernov.weatherbot.command;
+package ru.chernov.weatherbot.answer;
 
 import lombok.Getter;
 
@@ -14,10 +14,7 @@ import java.util.stream.Collectors;
 @Getter
 public enum Command {
     DEFAULT("Я не знаю такой команды"),
-    START("Привет, я бот погоды.\n" +
-            "Я могу рассказать про погоду.\n" +
-            "Также могу составить прогноз.\n" +
-            "Просто введи название города."),
+    START("Привет, я бот погоды.\nВведи название города, погода в котором тебя интересует.\n"),
     HELP("Введи название города и я покажу тебе прогноз погоды");
 
     private final String answer;

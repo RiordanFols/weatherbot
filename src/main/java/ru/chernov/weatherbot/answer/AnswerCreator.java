@@ -1,4 +1,4 @@
-package ru.chernov.weatherbot.bot;
+package ru.chernov.weatherbot.answer;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +7,6 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import ru.chernov.weatherbot.command.Command;
 import ru.chernov.weatherbot.keyboard.KeyboardGenerator;
 import ru.chernov.weatherbot.weather.WeatherManager;
 
@@ -20,10 +19,7 @@ import ru.chernov.weatherbot.weather.WeatherManager;
 @Component
 public class AnswerCreator {
 
-    public static final String CITY_NOT_FOUND = "Город не найден";
     public static final String BUTTONS_HEADER = "Что тебя интересует?";
-    public static final String UNKNOWN_REQUEST = "Неизвестный запрос";
-    public static final String UNACCEPTABLE_SYMBOLS = "Допустимы только латиница/кириллица, дефисы и пробелы";
 
     private final WeatherManager weatherManager;
     private final KeyboardGenerator keyboardGenerator;
@@ -60,7 +56,7 @@ public class AnswerCreator {
         } else if (update.hasCallbackQuery()) {  // если пришло нажатие на кнопку
             return answerForCallback(update.getCallbackQuery());
         } else {  // неизвестный запрос
-            messageOut.setText(UNKNOWN_REQUEST);
+            messageOut.setText(ErrorAnswer.UNKNOWN_REQUEST.getErrorMessage());
             return messageOut;
         }
     }
@@ -80,12 +76,12 @@ public class AnswerCreator {
         if (!StringUtils.containsOnly(text, " -" +
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
                 "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ")) {
-            messageOut.setText(UNACCEPTABLE_SYMBOLS);
+            messageOut.setText(ErrorAnswer.UNACCEPTABLE_SYMBOLS.getErrorMessage());
             return messageOut;
         }
 
         if (text.length() < 2 || text.length() > 30) {
-            messageOut.setText(CITY_NOT_FOUND);
+            messageOut.setText(ErrorAnswer.CITY_NOT_FOUND.getErrorMessage());
             return messageOut;
         }
 
@@ -95,7 +91,7 @@ public class AnswerCreator {
             messageOut.setReplyMarkup(keyboardGenerator.getAllOptions(text));
             messageOut.setText(BUTTONS_HEADER);
         } else {
-            messageOut.setText(CITY_NOT_FOUND);
+            messageOut.setText(ErrorAnswer.CITY_NOT_FOUND.getErrorMessage());
         }
 
         return messageOut;

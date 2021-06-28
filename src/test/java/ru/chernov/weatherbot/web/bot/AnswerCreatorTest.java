@@ -11,8 +11,9 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import ru.chernov.weatherbot.bot.AnswerCreator;
-import ru.chernov.weatherbot.command.Command;
+import ru.chernov.weatherbot.answer.AnswerCreator;
+import ru.chernov.weatherbot.answer.ErrorAnswer;
+import ru.chernov.weatherbot.answer.Command;
 
 /**
  * @author Pavel Chernov
@@ -94,7 +95,7 @@ public class AnswerCreatorTest {
 
         SendMessage messageOut = answerCreator.createAnswer(testUpdate);
 
-        Assertions.assertEquals(AnswerCreator.CITY_NOT_FOUND, messageOut.getText());
+        Assertions.assertEquals(ErrorAnswer.CITY_NOT_FOUND.getErrorMessage(), messageOut.getText());
         Assertions.assertNull(messageOut.getReplyMarkup());
     }
 
@@ -105,7 +106,7 @@ public class AnswerCreatorTest {
 
         SendMessage messageOut = answerCreator.createAnswer(testUpdate);
 
-        Assertions.assertEquals(AnswerCreator.UNACCEPTABLE_SYMBOLS, messageOut.getText());
+        Assertions.assertEquals(ErrorAnswer.UNACCEPTABLE_SYMBOLS.getErrorMessage(), messageOut.getText());
         Assertions.assertNull(messageOut.getReplyMarkup());
     }
 
@@ -116,7 +117,7 @@ public class AnswerCreatorTest {
 
         SendMessage messageOut = answerCreator.createAnswer(testUpdate);
 
-        Assertions.assertEquals(AnswerCreator.CITY_NOT_FOUND, messageOut.getText());
+        Assertions.assertEquals(ErrorAnswer.CITY_NOT_FOUND.getErrorMessage(), messageOut.getText());
         Assertions.assertNull(messageOut.getReplyMarkup());
     }
 
