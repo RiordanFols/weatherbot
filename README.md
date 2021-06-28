@@ -1,7 +1,7 @@
 # Weatherbot
 ## Телеграм-бот погоды. Информация о текущей погоде и прогноз до 14 дней
 ##### Java 15 + Spring boot 2 + Maven
-#####Использует Telegram Bot Api и openweather.api
+##### Использует Telegram Bot Api и openweather.api
 
 
 ##### Пример работы:
