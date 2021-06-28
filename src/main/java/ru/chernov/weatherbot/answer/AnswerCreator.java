@@ -24,13 +24,22 @@ public class AnswerCreator {
     private final WeatherManager weatherManager;
     private final KeyboardGenerator keyboardGenerator;
 
-    private SendMessage messageOut;
-
     @Autowired
     public AnswerCreator(WeatherManager weatherManager,
                          KeyboardGenerator keyboardGenerator) {
         this.weatherManager = weatherManager;
         this.keyboardGenerator = keyboardGenerator;
+    }
+
+    /**
+     * Настраивает SendMessage для ответа пользователю
+     *
+     * @param messageOut SendMessage для настройки
+     * @return настроенный SendMessage
+     */
+    private static SendMessage configureMessageOut(SendMessage messageOut) {
+        messageOut.setParseMode("markdown");
+        return messageOut;
     }
 
     /**
@@ -41,24 +50,27 @@ public class AnswerCreator {
      * @return готовое ответное сообщение
      */
     public SendMessage createAnswer(Update update) {
-        messageOut = new SendMessage();
-        messageOut.setParseMode("markdown");
 
-        if (update.hasMessage()) {  // если пришло сообщение
+        // если пришло сообщение
+        if (update.hasMessage()) {
             Message messageIn = update.getMessage();
-
-            if (messageIn.getText().startsWith("/")) {  // если пришла команда
+            // если пришла команда
+            if (messageIn.getText().startsWith("/")) {
                 return answerForCommand(messageIn);
             } else {
                 return answerForText(messageIn);
             }
-
-        } else if (update.hasCallbackQuery()) {  // если пришло нажатие на кнопку
-            return answerForCallback(update.getCallbackQuery());
-        } else {  // неизвестный запрос
-            messageOut.setText(ErrorAnswer.UNKNOWN_REQUEST.getErrorMessage());
-            return messageOut;
         }
+
+        // если пришло нажатие на кнопку
+        if (update.hasCallbackQuery()) {
+            return answerForCallback(update.getCallbackQuery());
+        }
+
+        // неизвестный запрос
+        SendMessage messageOut = new SendMessage();
+        messageOut.setText(ErrorAnswer.UNKNOWN_REQUEST.getErrorMessage());
+        return configureMessageOut(messageOut);
     }
 
     /**
@@ -70,19 +82,19 @@ public class AnswerCreator {
      */
     private SendMessage answerForText(Message message) {
         String text = message.getText();
-
+        SendMessage messageOut = new SendMessage();
         messageOut.setChatId(message.getChatId().toString());
 
         if (!StringUtils.containsOnly(text, " -" +
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
                 "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ")) {
             messageOut.setText(ErrorAnswer.UNACCEPTABLE_SYMBOLS.getErrorMessage());
-            return messageOut;
+            return configureMessageOut(messageOut);
         }
 
         if (text.length() < 2 || text.length() > 30) {
             messageOut.setText(ErrorAnswer.CITY_NOT_FOUND.getErrorMessage());
-            return messageOut;
+            return configureMessageOut(messageOut);
         }
 
         // проверка на существование города
@@ -94,11 +106,11 @@ public class AnswerCreator {
             messageOut.setText(ErrorAnswer.CITY_NOT_FOUND.getErrorMessage());
         }
 
-        return messageOut;
+        return configureMessageOut(messageOut);
     }
 
     /**
-     * Обрабатывает пришедшее сообщение и выдает ответ
+     * Обрабатывает пришедший callback запрос и выдает ответ
      *
      * @param callbackQuery нажатие на кнопку, взятое из update
      * @return ответное сообщение с прогнозом погоды
@@ -109,10 +121,11 @@ public class AnswerCreator {
         int forecastDays = Integer.parseInt(callbackQuery.getData().split("/")[1]);
 
         // получение прогноза
+        SendMessage messageOut = new SendMessage();
         messageOut.setText(weatherManager.getForecast(cityName, forecastDays));
         messageOut.setChatId(callbackQuery.getMessage().getChatId().toString());
 
-        return messageOut;
+        return configureMessageOut(messageOut);
     }
 
     /**
@@ -122,10 +135,10 @@ public class AnswerCreator {
      * @return ответное сообщение с ответом на команду
      */
     private SendMessage answerForCommand(Message message) {
-        // выдача информации по команде
+        SendMessage messageOut = new SendMessage();
         messageOut.setText(Command.handleCommand(message.getText()));
         messageOut.setChatId(message.getChatId().toString());
 
-        return messageOut;
+        return configureMessageOut(messageOut);
     }
 }
