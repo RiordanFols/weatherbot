@@ -8,17 +8,20 @@ import ru.chernov.weatherbot.weather.Weather;
 
 /**
  * Формирует сообщение для ответа пользователю
- * Работает с уже созданными dto от api.openweather
+ * Работает с уже созданными dto от API погоды
  *
  * @author Pavel Chernov
  */
 @Component
 public class MessageFormatter {
 
-    public static final String weatherPattern = "*%s* %s\n%s %s\nТемпература: %s\nОщущается как: %s\n" +
+    private static final String weatherPattern = "*%s* %s\n%s %s\nТемпература: %s\nОщущается как: %s\n" +
             "Ветер: %s %s м/c\nДавление: %s\nВлажность: %s\nРассвет: %s\nЗакат: %s";
 
-    public static final String[] months = {
+    private static final String forecastHeaderPattern = "*%s* %s";
+    private static final String forecastDayPattern = "\n%s %s: %s%s %s / %s";
+    
+    private static final String[] months = {
             "янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"};
 
     /**
@@ -62,20 +65,21 @@ public class MessageFormatter {
             throw new IllegalArgumentException("Bad dto");
 
         var forecast = new Forecast(dto);
-        var emoji = forecast.getCountry().getEmoji();
+        var flagEmoji = forecast.getCountry().getEmoji();
 
-        StringBuilder answer = new StringBuilder("*" + forecast.getCityName() + "* " + emoji);
+        StringBuilder answer = new StringBuilder(String.format(forecastHeaderPattern, forecast.getCityName(), flagEmoji));
+
         for (var dayForecast : forecast.getForecasts()) {
-            String day = String.valueOf(dayForecast.getLocalDate().getDayOfMonth());
-            String month = months[dayForecast.getLocalDate().getMonthValue() - 1];
+            var day = String.valueOf(dayForecast.getLocalDate().getDayOfMonth());
+            var month = months[dayForecast.getLocalDate().getMonthValue() - 1];
 
-            answer.append("\n")
-                    .append(day).append(" ")
-                    .append(month).append(": ")
-                    .append(dayForecast.getCondition().getRu())
-                    .append(dayForecast.getCondition().getEmoji())
-                    .append(" ").append(dayForecast.getDayTemp())
-                    .append(" / ").append(dayForecast.getNightTemp());
+            answer.append(String.format(forecastDayPattern,
+                    day,
+                    month,
+                    dayForecast.getCondition().getRu(),
+                    dayForecast.getCondition().getEmoji(),
+                    dayForecast.getDayTemp(),
+                    dayForecast.getNightTemp()));
         }
         return answer.toString();
     }
