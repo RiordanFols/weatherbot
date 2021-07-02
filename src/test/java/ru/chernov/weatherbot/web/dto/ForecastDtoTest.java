@@ -45,18 +45,18 @@ public class ForecastDtoTest {
     }
 
     @Test
-    void shouldNotFindCity() {
+    void shouldNotFindCityCauseBadCityName() {
         Assertions.assertThrows(HttpClientErrorException.NotFound.class, () -> {
-            String city = "PA-ECV<E3391-915913iu5jfj";
-            String uri = String.format(forecastUri, city, 3, openweatherApiKey);
+            String cityName = "notRealCityName";
+            String uri = String.format(forecastUri, cityName, 3, openweatherApiKey);
             String url = "https://" + uri;
             restTemplate.getForObject(url, ForecastDto.class);
         });
     }
 
     @Test
-        // number of days should be in [1, 17]
     void shouldCollapseCauseWrongDaysNumber() {
+        // < 1 is forbidden
         Assertions.assertThrows(HttpClientErrorException.BadRequest.class, () -> {
             String city = "Москва";
             String uri = String.format(forecastUri, city, -5, openweatherApiKey);
@@ -64,6 +64,7 @@ public class ForecastDtoTest {
             restTemplate.getForObject(url, ForecastDto.class);
         });
 
+        // > 17 is forbidden
         Assertions.assertThrows(HttpClientErrorException.BadRequest.class, () -> {
             String city = "Москва";
             String uri = String.format(forecastUri, city, 20, openweatherApiKey);

@@ -45,9 +45,9 @@ public class WeatherDtoTest {
     }
 
     @Test
-    void shouldNotFindCity() {
+    void shouldNotFindCityCauseBadCityName() {
         Assertions.assertThrows(HttpClientErrorException.NotFound.class, () -> {
-            String city = "PA-ECV<E3391-915913iu5jfj";
+            String city = "notRealCityName";
             String uri = String.format(weatherUri, city, openweatherApiKey);
             String url = "https://" + uri;
             restTemplate.getForObject(url, WeatherDto.class);

@@ -63,18 +63,18 @@ public class AnswerCreatorTest {
         SendMessage messageOut = answerCreator.createAnswer(testUpdate);
 
         Assertions.assertEquals(Command.START.getAnswer(), messageOut.getText());
-        Assertions.assertNull(messageOut.getReplyMarkup());
+        Assertions.assertNull(messageOut.getReplyMarkup()); // has no buttons
     }
 
     @Test
     void shouldAnswerForWrongCommand() {
-        testMessage.setText("/eee222oo2200sss");
+        testMessage.setText("/notARealCommand");
         testUpdate.setMessage(testMessage);
 
         SendMessage messageOut = answerCreator.createAnswer(testUpdate);
 
         Assertions.assertEquals(Command.DEFAULT.getAnswer(), messageOut.getText());
-        Assertions.assertNull(messageOut.getReplyMarkup());
+        Assertions.assertNull(messageOut.getReplyMarkup()); // has no buttons
     }
 
     @Test
@@ -85,18 +85,18 @@ public class AnswerCreatorTest {
         SendMessage messageOut = answerCreator.createAnswer(testUpdate);
 
         Assertions.assertEquals(AnswerCreator.BUTTONS_HEADER, messageOut.getText());
-        Assertions.assertNotNull(messageOut.getReplyMarkup());
+        Assertions.assertNotNull(messageOut.getReplyMarkup()); // has buttons
     }
 
     @Test
     void shouldAnswerToWrongCityName() {
-        testMessage.setText("ee-qqw--w");
+        testMessage.setText("notRealCityName");
         testUpdate.setMessage(testMessage);
 
         SendMessage messageOut = answerCreator.createAnswer(testUpdate);
 
         Assertions.assertEquals(ErrorAnswer.CITY_NOT_FOUND.getErrorMessage(), messageOut.getText());
-        Assertions.assertNull(messageOut.getReplyMarkup());
+        Assertions.assertNull(messageOut.getReplyMarkup()); // has no buttons
     }
 
     @Test
@@ -107,18 +107,18 @@ public class AnswerCreatorTest {
         SendMessage messageOut = answerCreator.createAnswer(testUpdate);
 
         Assertions.assertEquals(ErrorAnswer.UNACCEPTABLE_SYMBOLS.getErrorMessage(), messageOut.getText());
-        Assertions.assertNull(messageOut.getReplyMarkup());
+        Assertions.assertNull(messageOut.getReplyMarkup()); // has no buttons
     }
 
     @Test
     void shouldAnswerToTooLongMessage() {
-        testMessage.setText("Efa-efa-efa-efa-efa-efa-efa-efa-efa-efa-efa-efa-efa-efa-efa-efa-efa-efa");
+        testMessage.setText("TooooooooooooooooooooooooooooooLoooooooooooooooooooooooooooooong");
         testUpdate.setMessage(testMessage);
 
         SendMessage messageOut = answerCreator.createAnswer(testUpdate);
 
         Assertions.assertEquals(ErrorAnswer.CITY_NOT_FOUND.getErrorMessage(), messageOut.getText());
-        Assertions.assertNull(messageOut.getReplyMarkup());
+        Assertions.assertNull(messageOut.getReplyMarkup()); // has no buttons
     }
 
     @Test
@@ -129,7 +129,7 @@ public class AnswerCreatorTest {
         SendMessage messageOut = answerCreator.createAnswer(testUpdate);
 
         Assertions.assertNotNull(messageOut.getText());
-        Assertions.assertNull(messageOut.getReplyMarkup());
+        Assertions.assertNull(messageOut.getReplyMarkup()); // has no buttons
     }
 
     @Test
@@ -140,6 +140,6 @@ public class AnswerCreatorTest {
         SendMessage messageOut = answerCreator.createAnswer(testUpdate);
 
         Assertions.assertNotNull(messageOut.getText());
-        Assertions.assertNull(messageOut.getReplyMarkup());
+        Assertions.assertNull(messageOut.getReplyMarkup()); // has no buttons
     }
 }

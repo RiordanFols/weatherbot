@@ -24,6 +24,6 @@ public class CommandTest {
 
     @Test
     void shouldAnswerToWrongCommand() {
-        Assertions.assertEquals(Command.DEFAULT.getAnswer(), Command.handleCommand("/tra123ta123"));
+        Assertions.assertEquals(Command.DEFAULT.getAnswer(), Command.handleCommand("/notRealCommand"));
     }
 }

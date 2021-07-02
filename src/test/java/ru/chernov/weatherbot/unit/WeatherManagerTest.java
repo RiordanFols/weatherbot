@@ -41,7 +41,19 @@ public class WeatherManagerTest {
     }
 
     @Test
+    void shouldCollapseCauseBadCityName() {
+        assertThrows(IllegalArgumentException.class, () -> weatherManager.checkCityExisting(null));
+        assertThrows(IllegalArgumentException.class, () -> weatherManager.checkCityExisting(""));
+    }
+
+    @Test
     void shouldGetWeather() {
+        weatherManager.getWeather("Moscow");
+        Mockito.verify(messageFormatter).weatherInfo(any(WeatherDto.class));
+    }
+
+    @Test
+    void shouldGetWeatherIfZeroDays() {
         weatherManager.getForecast("Moscow", 0);
         Mockito.verify(messageFormatter).weatherInfo(any(WeatherDto.class));
     }
@@ -54,10 +66,8 @@ public class WeatherManagerTest {
 
     @Test
     void shouldCollapseCauseBadArguments() {
-        assertThrows(IllegalArgumentException.class, () -> weatherManager.checkCityExisting(null));
-        assertThrows(IllegalArgumentException.class, () -> weatherManager.checkCityExisting(""));
-
         assertThrows(IllegalArgumentException.class, () -> weatherManager.getForecast(null, 1));
         assertThrows(IllegalArgumentException.class, () -> weatherManager.getForecast("", 1));
+        assertThrows(IllegalArgumentException.class, () -> weatherManager.getWeather(null));
     }
 }
