@@ -63,6 +63,9 @@ public class WeatherManager {
      * @return сообщение о погоде, сформированное messageManager
      */
     public String getWeather(String cityName) {
+        if (StringUtils.isEmpty(cityName))
+            throw new IllegalArgumentException("Bad city name");
+
         String uri = String.format(weatherUri, cityName, openweatherApiKey);
         String url = "https://" + uri;
 
