@@ -5,13 +5,13 @@
 
 
 ##### Пример работы:
-![Пример работы](readme/use_example.png)
+<img src="readme/use_example.jpg" alt="Пример работы" width="441" height="632"/>
 
 ##### Для запуска:
 1) Зарегистрировать бота с помощью BotFather (Отдельный бот в telegram)
 
 2) Полученные токен и юзернейм записать как **telegram.bot.token** и **telegram.bot.username** 
-в файл *main/resources/application.properties* или задать как параметры запуска приложения 
+в файл *application.properties* или задать как параметры запуска приложения 
 
 3) Зарегистрироваться на www.openweathermap.org/api, получить ключ
 

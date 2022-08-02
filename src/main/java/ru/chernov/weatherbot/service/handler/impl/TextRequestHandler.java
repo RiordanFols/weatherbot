@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 public class TextRequestHandler implements RequestHandler {
 
     private static final Logger LOGGER = LogManager.getLogger(TextRequestHandler.class);
-    private static final Pattern CORRECT_SYMBOLS_PATTERN = Pattern.compile("[a-zA-Z]*|[а-яА-Я]*|\s*-*");
+    private static final Pattern CORRECT_SYMBOLS_PATTERN = Pattern.compile("[a-zA-Zа-яА-Я- ]*");
 
     private final KeyboardGenerator keyboardGenerator;
     private final OpenWeatherRestService openWeatherRestService;
