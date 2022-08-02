@@ -11,6 +11,8 @@ import ru.chernov.weatherbot.dto.internal.ForecastButtonDto;
 public class AbstractTest extends AbstractDependenciesTest {
 
     protected static final String TEST_CITY_NAME = "Берлин";
+    protected static final String TEST_HYPHEN_CITY_NAME = "Санкт-Петербург";
+    protected static final String TEST_SPACE_CITY_NAME = "Новый Уренгой";
     protected static final Chat TEST_FAKE_CHAT = new Chat(100L, "Some type");
 
 
